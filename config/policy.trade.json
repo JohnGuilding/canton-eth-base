@@ -1,0 +1,40 @@
+{
+  "policyId": "policy.trade.v1",
+  "name": "Trade Visibility and Regulator Disclosure Policy",
+  "schemaId": "trade.schema.v1",
+  "bundleFirst": true,
+  "bundles": {
+    "partyA.full": {
+      "description": "Originating institution full confidential view",
+      "visibleFields": ["x", "y", "z", "pricingDetails", "counterpartyMetadata", "internalRiskNotes"]
+    },
+    "partyB.shared": {
+      "description": "Matched counterparty negotiated view",
+      "visibleFields": ["x", "y", "pricingDetails"]
+    },
+    "partyC.min": {
+      "description": "Service provider minimal informational view",
+      "visibleFields": ["y"]
+    },
+    "regulator.disclosure": {
+      "description": "Regulator view under policy P with lawful basis",
+      "visibleFields": ["x", "y"],
+      "requiresLawfulBasis": true,
+      "policyReference": "P"
+    }
+  },
+  "roles": {
+    "A": ["partyA.full"],
+    "B": ["partyB.shared"],
+    "C": ["partyC.min"],
+    "R": ["regulator.disclosure"]
+  },
+  "compliance": {
+    "proofOnlyAssertions": [
+      {
+        "id": "limit-check-notional-lte-bucket",
+        "description": "Hash-anchored assertion that notional remains within the approved bucket"
+      }
+    ]
+  }
+}

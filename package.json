@@ -1,0 +1,20 @@
+{
+  "name": "canton-eth-base-prototype-b",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hackathon MVP for a Base-native Canton-like multiparty trade coordination protocol",
+  "scripts": {
+    "build": "hardhat compile",
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+    "demo": "hardhat run scripts/demo.ts",
+    "demo:local": "hardhat run scripts/demo.ts --network hardhat"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/node": "^22.13.9",
+    "hardhat": "^2.22.19",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
