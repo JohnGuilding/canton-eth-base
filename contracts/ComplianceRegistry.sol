@@ -16,6 +16,7 @@ contract ComplianceRegistry is Owned {
 
     mapping(bytes32 => ComplianceProof) public proofs;
     mapping(bytes32 => bytes32[]) public proofsByObject;
+    mapping(address => bool) public authorized;
 
     event ComplianceProofRecorded(
         bytes32 indexed objectId,
@@ -26,6 +27,18 @@ contract ComplianceRegistry is Owned {
         bool proofOnly
     );
 
+    event Authorized(address indexed caller, bool status);
+
+    function authorize(address caller) external onlyOwner {
+        authorized[caller] = true;
+        emit Authorized(caller, true);
+    }
+
+    function deauthorize(address caller) external onlyOwner {
+        authorized[caller] = false;
+        emit Authorized(caller, false);
+    }
+
     function recordProof(
         bytes32 objectId,
         bytes32 proofId,
@@ -33,7 +46,8 @@ contract ComplianceRegistry is Owned {
         bytes32 assertionHash,
         bytes32 proofHash,
         bool proofOnly
-    ) external onlyOwner returns (bytes32) {
+    ) external returns (bytes32) {
+        require(msg.sender == owner || authorized[msg.sender], "not authorized");
         proofs[proofId] = ComplianceProof({
             objectId: objectId,
             proofId: proofId,
